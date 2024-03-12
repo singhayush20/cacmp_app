@@ -105,7 +105,7 @@ class AuthController extends GetxController {
           validateStatus: (_) => true,
           contentType: Headers.jsonContentType,
           responseType: ResponseType.json,
-          headers: {HttpHeaders.authorizationHeader: bearerPrefix + token!});
+          headers: {HttpHeaders.authorizationHeader:token!});
       dio.Response response = await _dio.get(logoutUrl, options: options);
       Map<String, dynamic> responseData = response.data;
       log('response: $responseData');

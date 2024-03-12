@@ -1,4 +1,4 @@
-const baseUrl = "http://172.31.144.1:8085";
+const baseUrl = "https://2107-185-177-125-201.ngrok-free.app";
 const apiV1Prefix= "/api/v1";
 const requestUrl= "$baseUrl$apiV1Prefix";
 
@@ -23,6 +23,17 @@ enum ComplaintPriority{
 
   final String _value;
   const ComplaintPriority(this._value);
+
+  String get value => _value;
+}
+
+
+enum ComplaintStatus{
+ open("OPEN"),
+  reviewed("REVIEWED"),
+  closed("CLOSED");
+  final String _value;
+  const ComplaintStatus(this._value);
 
   String get value => _value;
 }

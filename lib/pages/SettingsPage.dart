@@ -12,6 +12,7 @@ import 'package:sizer/sizer.dart';
 import '../constants/themes/ColorConstants.dart';
 import '../stateUtil/AuthController.dart';
 import 'LoginPage.dart';
+import 'PasswordChangePage.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -100,6 +101,20 @@ class _SettingsPageState extends State<SettingsPage>
                   ),
                   onPressed: (BuildContext context) async {
                   Get.to(()=>const UserProfilePage());
+                  },
+                ),
+                SettingsTile(
+                  title: const Text(
+                    'Change account password',
+                  ),
+                  description: const Text(
+                    'Change the password for this account!',
+                  ),
+                  leading: const Icon(
+                    FontAwesomeIcons.lock,
+                  ),
+                  onPressed: (BuildContext context) async {
+                    Get.to(()=>const PasswordChangePage());
                   },
                 ),
               ],

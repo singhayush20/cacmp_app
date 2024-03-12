@@ -46,7 +46,7 @@ class NewComplaintController extends GetxController {
         validateStatus: (_) => true,
         contentType: Headers.jsonContentType,
         responseType: ResponseType.json,
-        headers: {HttpHeaders.authorizationHeader: bearerPrefix + accessToken!},
+        headers: {HttpHeaders.authorizationHeader:accessToken!},
       );
       dio.Response response = await _dio.get(
         categoriesListUrl,
@@ -89,7 +89,7 @@ class NewComplaintController extends GetxController {
         validateStatus: (_) => true,
         contentType: Headers.jsonContentType,
         responseType: ResponseType.json,
-        headers: {HttpHeaders.authorizationHeader: bearerPrefix + accessToken!},
+        headers: {HttpHeaders.authorizationHeader:accessToken!},
       );
 
 

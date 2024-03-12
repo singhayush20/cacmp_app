@@ -25,7 +25,7 @@ class UserDataController extends GetxController {
         validateStatus: (_) => true,
         contentType: Headers.jsonContentType,
         responseType: ResponseType.json,
-        headers: {HttpHeaders.authorizationHeader: bearerPrefix + accessToken!},
+        headers: {HttpHeaders.authorizationHeader:accessToken!},
       );
       log('loading data... $userDataUrl $userToken');
       dio.Response response = await _dio.get(userDataUrl,
@@ -60,7 +60,7 @@ class UserDataController extends GetxController {
         validateStatus: (_) => true,
         contentType: Headers.jsonContentType,
         responseType: ResponseType.json,
-        headers: {HttpHeaders.authorizationHeader: bearerPrefix + accessToken!},
+        headers: {HttpHeaders.authorizationHeader:accessToken!},
       );
       log('data: $name $gender $houseNo $locality $wardNo $pinCode $city $state');
       final Map<String, dynamic> data = {

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
+import 'package:cacmp_app/pages/ComplaintsFilterPage.dart';
 import 'package:cacmp_app/pages/LoginPage.dart';
-import 'package:cacmp_app/stateUtil/NewComplaintController.dart';
 import 'package:cacmp_app/util/SecureStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +11,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../constants/themes/ColorConstants.dart';
-import '../constants/widgets/CustomLoadingIndicator.dart';
 import '../stateUtil/ComplaintController.dart';
 import 'ComplaintDetailsPage.dart';
 import 'NewComplaintsPage.dart';
@@ -26,52 +25,46 @@ class ComplaintsPage extends StatefulWidget {
 class _ComplaintsPageState extends State<ComplaintsPage>
     with AutomaticKeepAliveClientMixin {
   final ComplaintController _complaintController = Get.find();
-  final SecureStorage _secureStorage=SecureStorage();
+  final SecureStorage _secureStorage = SecureStorage();
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     super.initState();
-    _fetchData(); // Fetch data when the page is first rendered
+    _fetchData();
   }
 
   void _fetchData() async {
-    final  response=await _complaintController.loadComplaints();
-    if(response==2003){
+    final response = await _complaintController.loadComplaints();
+    if (response == 2003) {
       await _secureStorage.deleteOnLogOut();
-      Get.off(()=>const LoginPage());
+      Get.off(() => const LoginPage());
     }
-    if (mounted) {
-      setState(() {});
-    }
+
   }
 
   void _onRefresh() async {
     try {
       log('refreshing...');
-      final  response=await _complaintController.loadComplaints();
-      if(response==2003){
+      final response = await _complaintController.loadComplaints();
+      if (response == 2003) {
         await _secureStorage.deleteOnLogOut();
-        Get.off(()=>const LoginPage());
+        Get.off(() => const LoginPage());
       }
     } finally {
-      if (mounted) {
-        setState(() {});
-      }
+
       _refreshController.refreshCompleted();
     }
   }
 
   void _onLoading() async {
-    final  response=await _complaintController.loadComplaints();
-    if(response==2003){
+    final response = await _complaintController.loadComplaints();
+    if (response == 2003) {
       await _secureStorage.deleteOnLogOut();
-      Get.off(()=>const LoginPage());
+      Get.off(() => const LoginPage());
     }
-    if (mounted) {
-      setState(() {});
-    }
+
     _refreshController.loadComplete();
   }
 
@@ -96,68 +89,97 @@ class _ComplaintsPageState extends State<ComplaintsPage>
       appBar: _appBar,
       body: SmartRefresher(
         enablePullDown: true,
-        enablePullUp: true,
         header: const WaterDropMaterialHeader(
           color: Colors.white,
           backgroundColor: Colors.teal,
         ),
-        footer: CustomFooter(
-          builder: (BuildContext context, LoadStatus? mode) {
-            Widget body;
-            if (mode == LoadStatus.idle) {
-              body = const Text("pull up load");
-            } else if (mode == LoadStatus.loading) {
-              body = const CustomLoadingIndicator(
-                color: Colors.tealAccent,
-              );
-            } else if (mode == LoadStatus.failed) {
-              body = const Text("Load Failed!Click retry!");
-            } else if (mode == LoadStatus.canLoading) {
-              body = const Text("release to load more");
-            } else {
-              body = const Text("No more Data");
-            }
-            return SizedBox(
-              height: 55.0,
-              child: Center(child: body),
-            );
-          },
-        ),
+        // enablePullUp: true,
+        // footer: CustomFooter(
+        //   builder: (BuildContext context, LoadStatus? mode) {
+        //     Widget body;
+        //     if (mode == LoadStatus.idle) {
+        //       body = const Text("pull up load");
+        //     } else if (mode == LoadStatus.loading) {
+        //       body = const CustomLoadingIndicator(
+        //         color: Colors.tealAccent,
+        //       );
+        //     } else if (mode == LoadStatus.failed) {
+        //       body = const Text("Load Failed!Click retry!");
+        //     } else if (mode == LoadStatus.canLoading) {
+        //       body = const Text("release to load more");
+        //     } else {
+        //       body = const Text("No more Data");
+        //     }
+        //     return SizedBox(
+        //       height: 55.0,
+        //       child: Center(child: body),
+        //     );
+        //   },
+        // ),
+        // onLoading: _onLoading,
         controller: _refreshController,
         onRefresh: _onRefresh,
-        onLoading: _onLoading,
         child: CustomScrollView(
           slivers: <Widget>[
-          SliverToBoxAdapter(
-            key: const Key('Heading'),
-            child: Container(
-              alignment: Alignment.center,
-              height:height*0.1,
-              padding: EdgeInsets.symmetric(horizontal: width*0.05,vertical: height*0.01),
+            SliverToBoxAdapter(
+              key: const Key('Heading'),
+              child: Container(
+                  alignment: Alignment.center,
+                  height: height * 0.1,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.05, vertical: height * 0.01),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "All Complaints",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      SizedBox(
+                        width: width * 0.4,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Get.to(() => const NewComplaintsPage());
+                            },
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Icon(FontAwesomeIcons.plus),
+                                Text("New Complaint")
+                              ],
+                            )),
+                      )
+                    ],
+                  ),),
+            ),
+
+            SliverToBoxAdapter(
+            key: const Key('Filter'),
+            child:  Container(
+              height: MediaQuery.of(context).size.height * 0.1,
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    "All Complaints",
-                    style: Theme.of(context).textTheme.titleLarge,
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.to(()=>const ComplaintsFilterPage());
+                    },
+                    child: Text(
+                      'Filter',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: Colors.white),
+                    ),
                   ),
-                  SizedBox(
-                    width: width*0.4,
-                    child: ElevatedButton(onPressed: (){
 
-                      Get.to(()=>const NewComplaintsPage());
-                    }, child:  const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Icon(FontAwesomeIcons.plus),
-                        Text("New Complaint")
-                      ],
-                    )),
-                  )
                 ],
-              )
+              ),
+            )
             ),
-          ),
             SliverToBoxAdapter(
               key: const Key('List'),
               child: Obx(
@@ -215,57 +237,56 @@ class _ComplaintsPageState extends State<ComplaintsPage>
             ),
           )
         : ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: _complaintController.complaints.length,
-            itemBuilder: (BuildContext context, int index) {
-              final complaint = _complaintController.complaints[index];
-              return GestureDetector(
-                onTap: () {
-                  Get.to(() => ComplaintDetailsPage(
-                      token: _complaintController
-                          .complaints[index].complaintToken));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Card(
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            complaint.complaintSubject,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: Colors.blue,
-                                ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          _buildComplaintInfo(
-                              "Category", complaint.complaintCategory),
-                          _buildComplaintInfo(
-                              "Status", complaint.complaintStatus),
-                          _buildComplaintInfo(
-                              "Comment", complaint.complaintDescription),
-                          _buildComplaintInfo(
-                              "Priority", complaint.complaintPriority),
-                        ],
-                      ),
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: _complaintController.complaints.length,
+          itemBuilder: (BuildContext context, int index) {
+            final complaint = _complaintController.complaints[index];
+            return GestureDetector(
+              onTap: () {
+                Get.to(() => ComplaintDetailsPage(
+                    token: _complaintController
+                        .complaints[index].complaintToken));
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          complaint.complaintSubject,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                color: Colors.blue,
+                              ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+
+                        _buildComplaintInfo(
+                            "Status", complaint.complaintStatus),
+                        _buildComplaintInfo(
+                            "Comment", complaint.complaintDescription),
+                        _buildComplaintInfo(
+                            "Priority", complaint.complaintPriority),
+                      ],
                     ),
                   ),
                 ),
-              );
-            },
-          );
+              ),
+            );
+          },
+        );
   }
 
   Widget _buildComplaintInfo(String label, String value) {

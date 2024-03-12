@@ -12,7 +12,7 @@ const String complaintDetailsUrl="$requestUrl/complaints/details";
 const String complaintImagesUrl="$requestUrl/complaints/details/images";
 const String saveComplaintUrl="$requestUrl/complaints/save";
 const String saveComplaintImagesUrl="$requestUrl/complaints/images/save";
-
+const String saveFeedbackUrl="$requestUrl/complaints/feedback";
 //category
 const String categoriesListUrl="$requestUrl/category";
 
