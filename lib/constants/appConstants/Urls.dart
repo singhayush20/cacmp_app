@@ -19,3 +19,8 @@ const String categoriesListUrl="$requestUrl/category";
 
 //user data
 const String userDataUrl="$requestUrl/consumer";
+
+//poll
+const String pollListUrl="$requestUrl/poll/poll-list";
+const String pollDetailsUrl="$requestUrl/poll/details";
+const String castVoteUrl="$requestUrl/poll/cast-vote";

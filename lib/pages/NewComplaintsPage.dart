@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cacmp_app/constants/appConstants/AppConstants.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:zoom_pinch_overlay/zoom_pinch_overlay.dart';
 
 import '../constants/themes/ColorConstants.dart';
 import '../constants/widgets/AppSnackbar.dart';
@@ -83,7 +81,7 @@ class _NewComplaintsPageState extends State<NewComplaintsPage> {
                                               height: height * 0.4,
                                               width: width * 0.95,
                                               color: Colors.white60,
-                                              padding: EdgeInsets.symmetric(
+                                              padding: const EdgeInsets.symmetric(
                                                 horizontal: 4,
                                                 vertical: 0,
                                               ),

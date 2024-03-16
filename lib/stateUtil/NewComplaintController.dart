@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:cacmp_app/constants/appConstants/Urls.dart';
@@ -7,7 +6,6 @@ import 'package:dio/dio.dart%20';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../constants/appConstants/AppConstants.dart';
 import '../dto/Category.dart';
 import '../util/SecureStorage.dart';
 

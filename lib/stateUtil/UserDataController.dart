@@ -7,7 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-import '../constants/appConstants/AppConstants.dart';
 import '../constants/appConstants/Urls.dart';
 
 class UserDataController extends GetxController {

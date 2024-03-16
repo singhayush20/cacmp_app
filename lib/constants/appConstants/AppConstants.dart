@@ -1,4 +1,4 @@
-const baseUrl = "https://2107-185-177-125-201.ngrok-free.app";
+const baseUrl = "http://192.168.137.1:8085";
 const apiV1Prefix= "/api/v1";
 const requestUrl= "$baseUrl$apiV1Prefix";
 

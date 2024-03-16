@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
 import '../constants/appConstants/Urls.dart';
@@ -39,10 +38,10 @@ class ComplaintController extends GetxController {
       isLoadingComplaints.value = true;
       String? accessToken = await _secureStorage.readAccessToken();
       String? userToken = await _secureStorage.readUserToken();
-      Options options = Options(
+      dio.Options options = dio.Options(
         validateStatus: (_) => true,
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.json,
+        contentType: dio.Headers.jsonContentType,
+        responseType: dio.ResponseType.json,
         headers: {
           HttpHeaders.authorizationHeader:accessToken!
         },

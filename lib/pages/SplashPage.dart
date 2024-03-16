@@ -1,4 +1,5 @@
 import 'package:cacmp_app/stateUtil/NewComplaintController.dart';
+import 'package:cacmp_app/stateUtil/PollController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,7 @@ class _SplashPageState extends State<SplashPage>
   final AuthController _loginController = Get.find();
   final ComplaintController _complaintController = Get.put(ComplaintController());
   final NewComplaintController _newComplaintController = Get.put(NewComplaintController());
-
+  final PollController _pollController=Get.put(PollController());
   late AnimationController animationController;
   late Animation<double> fadeAnimation;
 

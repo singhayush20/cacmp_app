@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 List<Complaint> complaintsFromJson(List<dynamic> str) {
   return List<Complaint>.from(str.map((x) {

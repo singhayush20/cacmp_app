@@ -11,7 +11,10 @@ import '../constants/themes/ColorConstants.dart';
 import '../constants/widgets/CustomLoadingIndicator2.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  final String email;
+
+  const SignUp({Key? key, required this.email}) : super(key: key);
+
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -37,6 +40,13 @@ class _SignUpState extends State<SignUp> {
   );
 
   final AuthController _authController=Get.find();
+
+
+  @override
+  void initState() {
+    _emailController.text=widget.email;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +96,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     SizedBox(height: 2.0.h),
                     TextFormField(
+                      enabled: false,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: inputFormFieldBoxDecoration.copyWith(

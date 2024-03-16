@@ -43,7 +43,7 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
   void initState() {
     super.initState();
     fetchData();
-    log('isSaving feedback: ${_isSavingFeedback}');
+    log('isSaving feedback: $_isSavingFeedback');
   }
 
   Future<void> uploadFeedbackData()async{
@@ -292,7 +292,7 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
               ? FloatingActionButton.extended(
                   label: const Text('Review'),
                   onPressed: () {
-                    log('isSaving feedback... ${_isSavingFeedback}');
+                    log('isSaving feedback... $_isSavingFeedback');
                     Get.defaultDialog(
                       barrierDismissible: false,
                       title: 'Review',
@@ -444,4 +444,6 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
       ),
     );
   }
+
+
 }

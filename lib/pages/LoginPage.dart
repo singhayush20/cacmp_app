@@ -1,5 +1,5 @@
 
-import 'package:cacmp_app/pages/SignUpPage.dart';
+import 'package:cacmp_app/pages/SignUpEmailPage.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -260,7 +260,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: height*0.05,
                     child: TextButton(
                       onPressed: () {
-                        Get.to(()=>const SignUp());
+                        Get.to(()=>const SignUpEmailPage());
                       },
                       child: Text('New user? Sign Up',style: TextStyle(fontSize: 15.sp,decoration: TextDecoration.underline , color: Colors.green,),),
                     ),

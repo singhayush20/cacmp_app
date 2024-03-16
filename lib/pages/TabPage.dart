@@ -1,4 +1,5 @@
 import 'package:cacmp_app/pages/ComplaintsPage.dart';
+import 'package:cacmp_app/pages/PollsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,7 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../constants/themes/ColorConstants.dart';
 import 'HomePage.dart';
 import 'SettingsPage.dart';
-
 
 class TabPage extends StatefulWidget {
   const TabPage({super.key});
@@ -17,16 +17,24 @@ class TabPage extends StatefulWidget {
 
 class _TabPageState extends State<TabPage> {
   final List<Widget> _pages = [
-   const HomePage(),
-  const ComplaintsPage(),
-  const SettingsPage()
+    const HomePage(),
+    const PollsPage(),
+    const ComplaintsPage(),
+    const SettingsPage()
   ];
 
   final List<BottomNavigationBarItem> _items = [
-  BottomNavigationBarItem(
+    BottomNavigationBarItem(
       label: "Home",
       icon: const Icon(
         FontAwesomeIcons.house,
+      ),
+      backgroundColor: kBottomNavigationBarColor,
+    ),
+    BottomNavigationBarItem(
+      label: "Polls",
+      icon: const Icon(
+        FontAwesomeIcons.squarePollVertical,
       ),
       backgroundColor: kBottomNavigationBarColor,
     ),
@@ -37,8 +45,7 @@ class _TabPageState extends State<TabPage> {
       ),
       backgroundColor: kBottomNavigationBarColor,
     ),
-
-     BottomNavigationBarItem(
+    BottomNavigationBarItem(
       label: "Settings",
       icon: const Icon(
         FontAwesomeIcons.gear,
@@ -49,12 +56,12 @@ class _TabPageState extends State<TabPage> {
 
   late PageController _pageController;
   int _selectedIndex = 0;
+
   @override
   void initState() {
     super.initState();
 
     _pageController = PageController();
-
   }
 
   @override
@@ -98,7 +105,7 @@ class _TabPageState extends State<TabPage> {
         onTap: _onTapped,
         items: _items,
         backgroundColor:
-        Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+            Theme.of(context).bottomNavigationBarTheme.backgroundColor,
       ),
     );
   }
