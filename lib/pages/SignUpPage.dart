@@ -11,9 +11,9 @@ import '../constants/themes/ColorConstants.dart';
 import '../constants/widgets/CustomLoadingIndicator2.dart';
 
 class SignUp extends StatefulWidget {
-  final String email;
 
-  const SignUp({Key? key, required this.email}) : super(key: key);
+
+  const SignUp({Key? key}) : super(key: key);
 
 
   @override
@@ -44,7 +44,8 @@ class _SignUpState extends State<SignUp> {
 
   @override
   void initState() {
-    _emailController.text=widget.email;
+    _emailController.text=_authController.signupEmail.value;
+    _phoneController.text=_authController.signupPhone.value.toString();
     super.initState();
   }
 
@@ -214,7 +215,7 @@ class _SignUpState extends State<SignUp> {
                             prefixIcon: const Icon(Icons.home),
                           ),
                           validator: (value){
-                            if(_isResident && (value==null|| value.trim().isEmpty)){
+                            if(value==null|| value.trim().isEmpty){
                               return "Please enter your house no.";
                             }
                             return null;
@@ -230,7 +231,7 @@ class _SignUpState extends State<SignUp> {
                             prefixIcon: const Icon(Icons.location_city),
                           ),
                           validator: (value){
-                            if(_isResident && (value==null|| value.trim().isEmpty)){
+                            if(value==null|| value.trim().isEmpty){
                               return "Please enter your locality";
                             }
                             return null;
@@ -246,7 +247,7 @@ class _SignUpState extends State<SignUp> {
                             prefixIcon: const Icon(Icons.location_on),
                           ),
                           validator: (value){
-                            if(_isResident && (value==null|| value.trim().isEmpty)){
+                            if(value==null|| value.trim().isEmpty){
                               return "Please enter your ward no.";
                             }
                             return null;
@@ -263,7 +264,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           validator: (value){
                            if(_isResident){
-                             if( (value==null|| value.trim().isEmpty)){
+                             if( value==null|| value.trim().isEmpty){
                                return "Please enter your pin code";
                              }
                              if (value.length != 6) {
@@ -286,7 +287,7 @@ class _SignUpState extends State<SignUp> {
                             prefixIcon: const Icon(Icons.location_city),
                           ),
                           validator: (value){
-                            if(_isResident && (value==null|| value.trim().isEmpty)){
+                            if(value==null|| value.trim().isEmpty){
                               return "Please enter your city";
                             }
                             return null;
@@ -302,7 +303,7 @@ class _SignUpState extends State<SignUp> {
                             prefixIcon: const Icon(Icons.location_city),
                           ),
                           validator: (value){
-                            if(_isResident && (value==null|| value.trim().isEmpty)){
+                            if(value==null|| value.trim().isEmpty){
                               return "Please enter your state";
                             }
                             return null;

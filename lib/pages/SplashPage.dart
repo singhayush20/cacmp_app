@@ -1,3 +1,5 @@
+import 'package:cacmp_app/stateUtil/AlertController.dart';
+import 'package:cacmp_app/stateUtil/ArticleFeedController.dart';
 import 'package:cacmp_app/stateUtil/NewComplaintController.dart';
 import 'package:cacmp_app/stateUtil/PollController.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +21,15 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage>
-    with TickerProviderStateMixin {
+class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   final AuthController _loginController = Get.find();
-  final ComplaintController _complaintController = Get.put(ComplaintController());
-  final NewComplaintController _newComplaintController = Get.put(NewComplaintController());
-  final PollController _pollController=Get.put(PollController());
+  final ComplaintController _complaintController =
+      Get.put(ComplaintController());
+  final NewComplaintController _newComplaintController =
+      Get.put(NewComplaintController());
+  final PollController _pollController = Get.put(PollController());
+  final AlertController _alertController = Get.put(AlertController());
+  final ArticleFeedController _articleFeedController = Get.put(ArticleFeedController());
   late AnimationController animationController;
   late Animation<double> fadeAnimation;
 
@@ -48,7 +53,7 @@ class _SplashPageState extends State<SplashPage>
       await initializeDateFormatting('en', null);
       if (await _loginController.isLoggedIn()) {
         Get.offAll(
-              () => const TabPage(),
+          () => const TabPage(),
           transition: Transition.leftToRight,
           curve: Curves.easeInOut,
           duration: const Duration(
@@ -57,7 +62,7 @@ class _SplashPageState extends State<SplashPage>
         );
       } else {
         Get.offAll(
-              () => const LoginPage(),
+          () => const LoginPage(),
           transition: Transition.leftToRight,
           curve: Curves.easeInOut,
           duration: const Duration(

@@ -1,11 +1,9 @@
-
 import 'package:cacmp_app/pages/SignUpEmailPage.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-
 import 'package:sizer/sizer.dart';
 
 import '../constants/themes/AppTheme.dart';
@@ -13,6 +11,7 @@ import '../constants/themes/ColorConstants.dart';
 import '../constants/widgets/AppSnackbar.dart';
 import '../constants/widgets/CustomLoadingIndicator2.dart';
 import '../stateUtil/AuthController.dart';
+import 'ForgetPassword.dart';
 import 'TabPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -254,16 +253,43 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    width: width,
-                    height: height*0.05,
-                    child: TextButton(
-                      onPressed: () {
-                        Get.to(()=>const SignUpEmailPage());
-                      },
-                      child: Text('New user? Sign Up',style: TextStyle(fontSize: 15.sp,decoration: TextDecoration.underline , color: Colors.green,),),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: height * 0.05,
+                        child: TextButton(
+                          onPressed: () {
+                            Get.to(() => const ForgetPassword());
+                          },
+                          child: Text(
+                            'Forgot Password',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              decoration: TextDecoration.underline,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.05,
+                        child: TextButton(
+                          onPressed: () {
+                            Get.to(() => const SignUpEmailPage());
+                          },
+                          child: Text(
+                            'New user? Sign Up',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              decoration: TextDecoration.underline,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

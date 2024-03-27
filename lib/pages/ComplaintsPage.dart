@@ -58,15 +58,9 @@ class _ComplaintsPageState extends State<ComplaintsPage>
     }
   }
 
-  void _onLoading() async {
-    final response = await _complaintController.loadComplaints();
-    if (response == 2003) {
-      await _secureStorage.deleteOnLogOut();
-      Get.off(() => const LoginPage());
-    }
 
-    _refreshController.loadComplete();
-  }
+
+
 
   final AppBar _appBar = AppBar(
     title: const Text('Complaints'),
@@ -295,7 +289,7 @@ class _ComplaintsPageState extends State<ComplaintsPage>
       if (value == "HIGH") {
         textColor = Colors.red;
       } else if (value == "MEDIUM") {
-        textColor = Colors.yellow;
+        textColor = const Color.fromRGBO(148, 110, 31, 1.0);
       } else if (value == "LOW") {
         textColor = Colors.green;
       }

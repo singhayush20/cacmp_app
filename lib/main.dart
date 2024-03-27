@@ -8,7 +8,6 @@ import 'package:sizer/sizer.dart';
 import 'constants/themes/AppTheme.dart';
 
 void main() {
-
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -20,13 +19,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     Get.put(AuthController());
     return Sizer(builder: (context, orientation, deviceTpe) {
       return GetMaterialApp(
-
         title: 'Flutter Demo',
         theme: themeData,
         darkTheme: themeData,

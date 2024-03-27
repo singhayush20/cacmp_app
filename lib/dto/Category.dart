@@ -7,7 +7,6 @@ import 'dart:developer';
 
 List<Category> categoriesFromJson(List<dynamic> list) {
   return List<Category>.from(list.map((x) {
-    log('category: $x');
     return Category.fromJson(x);
   }));
 }

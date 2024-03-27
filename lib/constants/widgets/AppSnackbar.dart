@@ -13,8 +13,8 @@ class AppSnackbar {
     DismissDirection dismissDirection = DismissDirection.horizontal,
     Curve forwardAnimationCurve = Curves.easeOutBack,
     Duration duration = const Duration(seconds: 3),
-    SnackStyle snackStyle = SnackStyle.FLOATING,
-    Duration animationDuration = const Duration(milliseconds: 500),
+    SnackStyle snackStyle = SnackStyle.GROUNDED,
+    Duration animationDuration = const Duration(milliseconds: 300),
     bool isDismissible = true,
     LinearGradient backgroundGradient = const LinearGradient(
       colors: [Colors.teal, Colors.blueAccent],

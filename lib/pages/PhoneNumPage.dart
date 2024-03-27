@@ -1,30 +1,30 @@
 import 'package:cacmp_app/constants/themes/ColorConstants.dart';
 import 'package:cacmp_app/constants/widgets/AppSnackbar.dart';
 import 'package:cacmp_app/constants/widgets/CustomLoadingIndicator2.dart';
-import 'package:cacmp_app/pages/EmailOTPPage.dart';
-import 'package:email_validator/email_validator.dart';
+import 'package:cacmp_app/pages/PhoneOTPPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../constants/themes/AppTheme.dart';
 import '../stateUtil/AuthController.dart';
 
-class SignUpEmailPage extends StatefulWidget {
-  const SignUpEmailPage({super.key});
+class SignUpPhoneNumPage extends StatefulWidget {
+  const SignUpPhoneNumPage({super.key});
 
   @override
-  State<SignUpEmailPage> createState() => _SignUpEmailPageState();
+  State<SignUpPhoneNumPage> createState() => _SignUpPhoneNumPageState();
 }
 
-class _SignUpEmailPageState extends State<SignUpEmailPage> {
+class _SignUpPhoneNumPageState extends State<SignUpPhoneNumPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _appBar = AppBar(
     title: const Text('Sign Up'),
   );
 
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneNumController = TextEditingController();
   final AuthController _authController = Get.find();
 
   @override
@@ -48,7 +48,7 @@ class _SignUpEmailPageState extends State<SignUpEmailPage> {
             horizontal: width * 0.02,
           ),
           child: Obx(
-            () => Column(
+                () => Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -60,7 +60,7 @@ class _SignUpEmailPageState extends State<SignUpEmailPage> {
                   height: height * 0.1,
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Enter your email and we will send you an otp to verify!',
+                    'Enter your phone number and we will send you an otp to verify!',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -70,16 +70,16 @@ class _SignUpEmailPageState extends State<SignUpEmailPage> {
                 Form(
                   key: _formKey,
                   child: TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
+                    controller: _phoneNumController,
+                    keyboardType: TextInputType.number,
                     decoration: inputFormFieldBoxDecoration.copyWith(
-                      labelText: 'Email',
-                      hintText: 'Email',
-                      prefixIcon: const Icon(Icons.email),
+                      labelText: 'Phone Number',
+                      hintText: 'Phone Number',
+                      prefixIcon: const Icon(FontAwesomeIcons.phone)
                     ),
                     validator: (value) {
-                      if (value == null || !EmailValidator.validate(value)) {
-                        return "Please enter a valid email";
+                      if (value == null || value.trim().length!=10) {
+                        return "Please enter a valid phone number";
                       }
                       return null;
                     },
@@ -92,18 +92,18 @@ class _SignUpEmailPageState extends State<SignUpEmailPage> {
                   height: height * 0.05,
                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                   child: ElevatedButton(
-                    onPressed: (_authController.isSendingOTP.value) ? null :() async{
+                    onPressed: (_authController.isSendingPhoneOTP.value) ? null :() async{
                       if (_formKey.currentState!.validate()) {
-                        final code=await _authController.sendEmailVerificationOTP(email: _emailController.text);
+                        final code=await _authController.sendPhoneVerificationOTP(phoneNum: int.parse(_phoneNumController.text));
                         if(code==2000){
-                          Get.to(()=>EmailOTPPage(email: _emailController.text));
+                          Get.to(()=>PhoneOTPPage(phone: int.parse(_phoneNumController.text)));
                         }
                         else{
                           AppSnackbar.showSnackbar(title: "Failed!", description: "Cannot send otp at this moment!");
                         }
                       }
                     },
-                    child:(_authController.isSendingOTP.value) ? CustomLoadingIndicator2(color: kPrimaryColor,size: 25,) :const Text('Submit'),
+                    child:(_authController.isSendingPhoneOTP.value) ? CustomLoadingIndicator2(color: kPrimaryColor,size: 25,) :const Text('Submit'),
                   ),
                 ),
               ],

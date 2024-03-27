@@ -1,36 +1,38 @@
-import 'package:cacmp_app/util/SecureStorage.dart';
+import 'package:cacmp_app/constants/widgets/AppSnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
+import '../constants/appConstants/AppConstants.dart';
 import '../constants/themes/AppTheme.dart';
 import '../constants/themes/ColorConstants.dart';
-import '../constants/widgets/AppSnackbar.dart';
 import '../constants/widgets/CustomLoadingIndicator2.dart';
 import '../stateUtil/AuthController.dart';
+import 'LoginPage.dart';
 
-class PasswordChangePage extends StatefulWidget {
-  const PasswordChangePage({super.key});
+class ResetPasswordPage extends StatefulWidget {
+  final String? email;
+  final int? phone;
+
+  const ResetPasswordPage({super.key, this.email, this.phone});
 
   @override
-  State<PasswordChangePage> createState() => _PasswordChangePageState();
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
-class _PasswordChangePageState extends State<PasswordChangePage> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _oldPasswordController = TextEditingController();
-  final TextEditingController _newPasswordController = TextEditingController();
-  final AuthController _authController = Get.find();
-  late final String userToken;
+
   final _appBar = AppBar(
     title: const Text('Change password!'),
   );
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
+  final AuthController _authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
     final height =
         MediaQuery.of(context).size.height - _appBar.preferredSize.height;
     return Scaffold(
-      appBar: AppBar(title: const Text("Change password")),
+      appBar: _appBar,
       body: SingleChildScrollView(
         child: Padding(
             padding: EdgeInsets.symmetric(
@@ -60,7 +62,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                   height: height * 0.15,
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Enter the old and new password and click submit!",
+                    "Enter the otp we sent on your phone or email along with your new password!",
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -73,7 +75,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextFormField(
-                        controller: _oldPasswordController,
+                        controller: _passwordController,
                         obscureText: true,
                         decoration: inputFormFieldBoxDecoration.copyWith(
                           labelText: 'Password',
@@ -92,7 +94,7 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                       ),
                       SizedBox(height: 2.0.h),
                       TextFormField(
-                        controller: _newPasswordController,
+                        controller: _confirmPasswordController,
                         obscureText: true,
                         decoration: inputFormFieldBoxDecoration.copyWith(
                           labelText: 'Verify Password',
@@ -103,6 +105,25 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a valid password';
                           }
+                          if (value != _passwordController.text) {
+                            return 'Password do not match!';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 2.0.h),
+                      TextFormField(
+                        controller: _otpController,
+                        keyboardType: TextInputType.number,
+                        decoration: inputFormFieldBoxDecoration.copyWith(
+                          labelText: 'OTP',
+                          hintText: 'Enter the otp you received',
+                          prefixIcon: const Icon(Icons.pin),
+                        ),
+                        validator: (value) {
+                          if (!isValidOTP(value)) {
+                            return "Enter a valid otp";
+                          }
                           return null;
                         },
                       ),
@@ -111,23 +132,25 @@ class _PasswordChangePageState extends State<PasswordChangePage> {
                         onPressed: () async {
                           FocusScope.of(context).unfocus();
                           if (_formKey.currentState!.validate()) {
-                            final code = await _authController.changeOldPassword(
-                              oldPassword: _oldPasswordController.text,
-                              newPassword: _newPasswordController.text,
+                            final code = await _authController.changePassword(
+                              password: _passwordController.text,
+                              otp: int.parse(_otpController.text),
+                              email: widget.email,
+                              phone: widget.phone,
                             );
                             if(code==2000){
-                              Get.back();
+                              Get.off(()=>const LoginPage());
                               AppSnackbar.showSnackbar(title: "Password reset", description: "Your password has been reset successfully!");
                             }
                             else if(code==2002){
-                              AppSnackbar.showSnackbar(title: "Failed!", description: "Please check your current password!");
+                              AppSnackbar.showSnackbar(title: "Failed!", description: "Password reset failed!");
                             }
                           }
                         },
                         child: (_authController.isSigningUp.value)
                             ? const CustomLoadingIndicator2(
-                          color: Colors.white,
-                        )
+                                color: Colors.white,
+                              )
                             : const Text('Sign Up'),
                       ),
                     ],
