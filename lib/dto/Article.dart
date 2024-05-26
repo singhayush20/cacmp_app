@@ -15,7 +15,6 @@ String articlesToJson(List<Article> data) {
 class Article {
   String articleToken;
   String title;
-  String content;
   String slug;
   String publishStatus;
   String publishDate;
@@ -25,7 +24,6 @@ class Article {
   Article({
     required this.articleToken,
     required this.title,
-    required this.content,
     required this.slug,
     required this.publishStatus,
     required this.publishDate,
@@ -36,7 +34,6 @@ class Article {
   factory Article.fromJson(Map<String, dynamic> json) =>  Article(
     articleToken: json["articleToken"],
     title: json["title"],
-    content: json["content"],
     slug: json["slug"],
     publishStatus: json["publishStatus"],
     publishDate: json["publishDate"],
@@ -47,7 +44,6 @@ class Article {
   Map<String, dynamic> toJson() => {
     "articleToken": articleToken,
     "title": title,
-    "content": content,
     "slug": slug,
     "publishStatus": publishStatus,
     "publishDate": publishDate,

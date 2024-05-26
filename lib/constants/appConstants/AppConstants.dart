@@ -1,4 +1,5 @@
-const baseUrl = "https://840d-138-199-22-99.ngrok-free.app";
+const baseUrl = "http://192.168.41.136:8086";
+// const baseUrl="https://municipal-hub-backend.azurewebsites.net";
 const apiV1Prefix = "/api/v1";
 const requestUrl = "$baseUrl$apiV1Prefix";
 

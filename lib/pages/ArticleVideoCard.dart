@@ -1,16 +1,18 @@
 import 'dart:developer';
 
+import 'package:cacmp_app/util/DateFormatUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sizer/sizer.dart';
 import 'package:video_player/video_player.dart';
 
 import '../dto/Article.dart';
 
 class ArticleVideoCard extends StatefulWidget {
   final Article article;
-
-  const ArticleVideoCard({Key? key, required this.article}) : super(key: key);
+  final double width, height;
+  const ArticleVideoCard({Key? key, required this.article, required this.width, required this.height}) : super(key: key);
 
   @override
   State<ArticleVideoCard> createState() => _ArticleVideoCardState();
@@ -59,24 +61,27 @@ class _ArticleVideoCardState extends State<ArticleVideoCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0,),
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
+    return Container(
+      alignment: Alignment.centerLeft,
+      width: widget.width,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AspectRatio(
-              aspectRatio: _calculateAspectRatio(), // Calculate aspect ratio dynamically
+              aspectRatio: _calculateAspectRatio(),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
                    (!isPreparingControllers && _controllers.isNotEmpty)?
 
                     PageView.builder(
+
                       controller: _pageController,
                       physics: const BouncingScrollPhysics(),
                       onPageChanged: (int page) {
@@ -154,12 +159,30 @@ class _ArticleVideoCardState extends State<ArticleVideoCard> {
             ),
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Text(
-                widget.article.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.article.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style:  TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.sp,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 2,),
+                  Text(
+                    'Published: ${formatDate(DateTime.parse(widget.article.publishDate))}',
+                    style:  TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

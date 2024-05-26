@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cacmp_app/constants/appConstants/AppConstants.dart';
 import 'package:cacmp_app/constants/widgets/AppSnackbar.dart';
 import 'package:cacmp_app/constants/widgets/CustomLoadingIndicator.dart';
 import 'package:cacmp_app/constants/widgets/CustomLoadingIndicator2.dart';
@@ -11,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants/themes/ColorConstants.dart';
 
 class AlertPage extends StatefulWidget {
@@ -194,8 +198,18 @@ class _AlertPageState extends State<AlertPage>
               ),
             ),
           ),
-          onTap: () {
-            Get.to(() => AlertDetailsPage(alertToken: alert['alertToken']));
+          onTap: () async{
+            log('alert: $alert');
+            if(alert['alertInputType']==AlertInputType.document.value){
+              final String url=alert['alertDocuments'][0]['documentUrl'];
+              log('url: $url');
+              if (!await launchUrl(Uri.parse(url))) {
+                throw Exception('Could not launch $url');
+              }
+            }
+            else{
+              Get.to(() => AlertDetailsPage(alertToken: alert['alertToken']));
+            }
           },
         );
       },

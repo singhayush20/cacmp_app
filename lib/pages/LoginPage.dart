@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        'Municipal Services\nConsumer Portal',
+                        'Municipal Hub',
                         style: Theme.of(context).textTheme.titleLarge,
                         textAlign: TextAlign.center,
                       ),
@@ -210,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                                         title: 'Welcome!',
                                         description: 'Login is successful!',
                                       );
-                                      Get.off(
+                                      Get.offAll(
                                         () => const TabPage(),
                                         transition: Transition.fadeIn,
                                         curve: Curves.easeInOut,

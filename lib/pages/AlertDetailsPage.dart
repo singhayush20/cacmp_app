@@ -28,9 +28,9 @@ class _AlertDetailsPageState extends State<AlertDetailsPage> {
   final AlertController _alertController = Get.find();
   final SecureStorage _secureStorage = SecureStorage();
 
-  PDFViewController? controller;
-  int pages = 0;
-  int indexPage = 0;
+  // PDFViewController? controller;
+  // int pages = 0;
+  // int indexPage = 0;
 
   @override
   void initState() {
@@ -82,10 +82,12 @@ class _AlertDetailsPageState extends State<AlertDetailsPage> {
               ? CustomLoadingIndicator2(color: kPrimaryColor)
               : Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.02),
-                  child: (_alertController
-                              .alertDetails.value['alertInputType'] ==
-                          AlertInputType.text.value)
-                      ? Column(
+                  child:
+                  // (_alertController
+                  //             .alertDetails.value['alertInputType'] ==
+                  //         AlertInputType.text.value)
+                  //     ?
+                  Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             (_alertController.alertDetails.value['alertImages']
@@ -154,63 +156,63 @@ class _AlertDetailsPageState extends State<AlertDetailsPage> {
                             ),
                           ],
                         )
-                      : (_alertController.document.value != null)
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: width,
-                                  height: height * 0.1,
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Details',
-                                    style:
-                                        Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                ),
-                                DetailsItem(
-                                  title: 'Subject',
-                                  value: _alertController
-                                      .alertDetails.value['subject'],
-                                ),
-                                DetailsItem(
-                                  title: 'Published On',
-                                  value: formatDate(DateTime.parse(
-                                      _alertController
-                                          .alertDetails.value['publishedOn'])),
-                                ),
-                                Container(
-                                  height: height * 0.7,
-                                  width: width,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black),
-                                    color: Colors.red,
-
-                                  ),
-                                  child: PDFView(
-                                    filePath:
-                                        _alertController.document.value!.path,
-                                    autoSpacing: false,
-                                    swipeHorizontal: true,
-                                    pageSnap: false,
-                                    pageFling: false,
-                                    onRender: (pages) => setState(() {
-                                      this.pages = pages ?? 0;
-                                      log('rendering... ${this.pages}');
-                                    }),
-                                    onViewCreated: (controller) => setState(() {
-                                      log('view created...');
-                                      this.controller = controller;
-                                    }),
-                                    onPageChanged: (indexPage, _) => setState(
-                                        () => this.indexPage = indexPage!),
-                                  ),
-                                )
-                              ],
-                            )
-                          : Container(),
-                ),
+                      // : (_alertController.document.value != null)
+                      //     ? Column(
+                      //         mainAxisAlignment: MainAxisAlignment.start,
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           Container(
+                      //             width: width,
+                      //             height: height * 0.1,
+                      //             alignment: Alignment.centerLeft,
+                      //             child: Text(
+                      //               'Details',
+                      //               style:
+                      //                   Theme.of(context).textTheme.bodyLarge,
+                      //             ),
+                      //           ),
+                      //           DetailsItem(
+                      //             title: 'Subject',
+                      //             value: _alertController
+                      //                 .alertDetails.value['subject'],
+                      //           ),
+                      //           DetailsItem(
+                      //             title: 'Published On',
+                      //             value: formatDate(DateTime.parse(
+                      //                 _alertController
+                      //                     .alertDetails.value['publishedOn'])),
+                      //           ),
+                      //           // Container(
+                      //           //   height: height * 0.7,
+                      //           //   width: width,
+                      //           //   decoration: BoxDecoration(
+                      //           //     border: Border.all(color: Colors.black),
+                      //           //     color: Colors.red,
+                      //           //
+                      //           //   ),
+                      //           //   child: PDFView(
+                      //           //     filePath:
+                      //           //         _alertController.document.value!.path,
+                      //           //     autoSpacing: false,
+                      //           //     swipeHorizontal: true,
+                      //           //     pageSnap: false,
+                      //           //     pageFling: false,
+                      //           //     onRender: (pages) => setState(() {
+                      //           //       this.pages = pages ?? 0;
+                      //           //       log('rendering... ${this.pages}');
+                      //           //     }),
+                      //           //     onViewCreated: (controller) => setState(() {
+                      //           //       log('view created...');
+                      //           //       this.controller = controller;
+                      //           //     }),
+                      //           //     onPageChanged: (indexPage, _) => setState(
+                      //           //         () => this.indexPage = indexPage!),
+                      //           //   ),
+                      //           // )
+                      //         ],
+                      //       )
+                      //     : Container(),
+          ),
         ),
       ),
     );

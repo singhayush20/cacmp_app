@@ -178,7 +178,7 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                     height: height * 0.3,
                     width: width,
                     padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.05, vertical: height * 0.01),
+                        horizontal: width * 0.01, vertical: height * 0.01),
                     child: CarouselSlider(
                       items: imageUrls.map<Widget>((url) {
                         return DetailsImageContainer(
@@ -186,6 +186,8 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                       }).toList(),
                       options: CarouselOptions(
                           autoPlay: false,
+                          enableInfiniteScroll: false,
+                          initialPage: 0,
                           aspectRatio: 16 / 9,
                           enlargeCenterPage: true,
                           pauseAutoPlayOnTouch: true,

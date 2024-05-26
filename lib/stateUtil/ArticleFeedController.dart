@@ -47,13 +47,18 @@ class ArticleFeedController extends GetxController {
       final dio.Response response =
           await _dio.get(articleFeedUrl, options: options, data: requestBody);
 
-      Map<String, dynamic> data = response.data;
       Map<String, dynamic> responseData = response.data;
+      log('article data: $responseData');
       if (responseData.isNotEmpty) {
         if (responseData['code'] == 2000) {
-          List<Article> categoriesList =
+          List<Article> articlesList =
           articlesFromJson(responseData['data']);
-          articles.value = categoriesList;
+          if(isLoadingMore){
+            articles.addAll(articlesList);
+          }
+          else{
+            articles.value=articlesList;
+          }
         }
         return responseData['code'];
       }

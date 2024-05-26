@@ -1,18 +1,22 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cacmp_app/stateUtil/ArticleFeedController.dart';
+import 'package:cacmp_app/util/DateFormatUtil.dart';
 import 'package:cacmp_app/util/SecureStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sizer/sizer.dart';
 
 import '../constants/appConstants/AppConstants.dart';
 import '../constants/themes/ColorConstants.dart';
-import '../constants/widgets/CustomLoadingIndicator.dart';
+import '../constants/widgets/CustomLoadingIndicator2.dart';
 import 'ArticleImageCard.dart';
 import 'ArticleVideoCard.dart';
+import 'ArticlesDetailsPage.dart';
 import 'LoginPage.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,6 +33,7 @@ class _HomePageState extends State<HomePage>
 
   final AppBar _appBar = AppBar(
     title: const Text("Home Page"),
+    automaticallyImplyLeading: false,
   );
 
   final RefreshController _refreshController =
@@ -40,11 +45,15 @@ class _HomePageState extends State<HomePage>
     _fetchData();
   }
 
-  void _fetchData({bool isLoadingMore=false}) async {
-    final response = await _articleFeedController.loadArticlesFeed(isLoadingMore: isLoadingMore);
+  void _fetchData({bool isLoadingMore = false}) async {
+    final response = await _articleFeedController.loadArticlesFeed(
+        isLoadingMore: isLoadingMore);
     if (response == 2003) {
       await _secureStorage.deleteOnLogOut();
       Get.off(() => const LoginPage());
+    }
+    if (isLoadingMore) {
+      _refreshController.loadComplete();
     }
   }
 
@@ -58,6 +67,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void _onLoading() async {
+    log('loading more...');
     _fetchData(isLoadingMore: true);
   }
 
@@ -91,7 +101,7 @@ class _HomePageState extends State<HomePage>
             if (mode == LoadStatus.idle) {
               body = const Text("...");
             } else if (mode == LoadStatus.loading) {
-              body = const CustomLoadingIndicator(
+              body = const CustomLoadingIndicator2(
                 color: Colors.tealAccent,
               );
             } else if (mode == LoadStatus.failed) {
@@ -160,19 +170,187 @@ class _HomePageState extends State<HomePage>
   bool get wantKeepAlive => true;
 
   Widget _buildArticlesList(BuildContext context, double height, double width) {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: _articleFeedController.articles.length,
-      itemBuilder: (BuildContext context, int index) {
-        return (_articleFeedController.articles[index].articleMedia.isEmpty)
-            ? Text(_articleFeedController.articles[index].title)
-            : (_articleFeedController.articles[index].articleMedia[0].mediaType==MediaType.image.value)
-            ? ArticleImageCard(article: _articleFeedController.articles[index])
-            : ArticleVideoCard(article: _articleFeedController.articles[index]);
-      },
-    );
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: width * 0.02,
+      ),
+      child: ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: _articleFeedController.articles.length,
+        itemBuilder: (BuildContext context, int index) {
+          if (_articleFeedController.articles[index].articleMedia.isEmpty) {
+            return InkWell(
+              onTap: () {
+                Get.to(
+                  () => ArticleDetailsPage(
+                    article: _articleFeedController.articles[index],
+                  ),
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.only(
+                  top: 5,
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.02,
+                ),
+                alignment: Alignment.centerLeft,
+                height: 100,
+                width: width,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: ListTile(
+                  title: Text(
+                    _articleFeedController.articles[index].title,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  subtitle: Row(
+                    children: [
+                      Text(
+                        'Published on: ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14.sp,
+                            color: Colors.black87,
+                            fontStyle: FontStyle.italic),
+                      ),
+                      Text(
+                        formatDate(
+                          DateTime.parse(
+                            _articleFeedController.articles[index].publishDate,
+                          ),
+                        ),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12.sp,
+                            color: Colors.black,
+                            fontStyle: FontStyle.italic),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else if (_articleFeedController
+                  .articles[index].articleMedia[0].mediaType ==
+              MediaType.image.value) {
+            if (_articleFeedController.articles[index].articleMedia.length >
+                1) {
+              return InkWell(
+                onTap: () {
+                  Get.to(
+                    () => ArticleDetailsPage(
+                      article: _articleFeedController.articles[index],
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(
+                    top: 5,
+                  ),
+                  child: ArticleImageCard(
+                    article: _articleFeedController.articles[index],
+                    height: height,
+                    width: width,
+                  ),
+                ),
+              );
+            } else {
+              log('${_articleFeedController.articles[index].articleMedia.length} index: $index');
+              return InkWell(
+                onTap: () {
+                  Get.to(
+                    () => ArticleDetailsPage(
+                      article: _articleFeedController.articles[index],
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(
+                    top: 5,
+                  ),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    elevation: 4,
+                    child: ListTile(
+                      title: Text(
+                        _articleFeedController.articles[index].title,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Row(
+                        children: [
+                          Text(
+                            'Published on: ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14.sp,
+                              color: Colors.black87,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                          Text(
+                            formatDate(
+                              DateTime.parse(
+                                _articleFeedController.articles[index].publishDate,
+                              ),
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.fade,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12.sp,
+                              color: Colors.black,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
+                      trailing: SizedBox(
+                        width: 100, // Set the width according to your needs
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: _articleFeedController.articles[index].articleMedia[0].url,
+                            placeholder: (context, url) => Container(color: Colors.grey),
+                            errorWidget: (context, url, error) => Container(color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
 
-    return Container();
+                ),
+              );
+            }
+          } else {
+            return InkWell(
+              onTap: () {
+                Get.to(
+                  () => ArticleDetailsPage(
+                    article: _articleFeedController.articles[index],
+                  ),
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.only(
+                  top: 5,
+                ),
+                child: ArticleVideoCard(
+                  article: _articleFeedController.articles[index],
+                  width: width,
+                  height: height,
+                ),
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 }

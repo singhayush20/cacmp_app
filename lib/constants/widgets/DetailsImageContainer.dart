@@ -19,7 +19,7 @@ class DetailsImageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black, width: 2.0),
+        border: Border.all(color: Colors.black, width: 1.0),
         borderRadius: BorderRadius.circular(10),
         color: Colors.black12,
       ),
@@ -38,8 +38,8 @@ class DetailsImageContainer extends StatelessWidget {
           imageUrl: imageUrl,
           fit: BoxFit.contain,
           placeholder: (context, url) => Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            baseColor: Colors.grey[50]!,
+            highlightColor: Colors.grey[50]!,
             child: Container(
               height: height * 0.2,
               width: width,
@@ -49,8 +49,8 @@ class DetailsImageContainer extends StatelessWidget {
             ),
           ),
           errorWidget: (context, url, error) => Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
+            baseColor: Colors.grey[50]!,
+            highlightColor: Colors.grey[50]!,
             child: Container(
               height: height * 0.2,
               width: width,

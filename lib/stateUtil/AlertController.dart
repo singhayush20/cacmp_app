@@ -20,7 +20,7 @@ class AlertController extends GetxController {
   RxMap<String, dynamic> alertDetails = <String, dynamic>{}.obs;
   RxBool isLoadingAlerts = false.obs;
   RxBool isLoadingDetails = false.obs;
-  Rx<File?> document = Rx<File?>(null);
+  // Rx<File?> document = Rx<File?>(null);
 
   Future<int> loadAlerts(
       {required Map<String, dynamic> pagination,
@@ -77,11 +77,11 @@ class AlertController extends GetxController {
         if (responseData['code'] == 2000) {
           alertDetails.value = responseData['data'];
           log('${alertDetails['alertDocuments']}');
-          File? docFile =
-              await _checkForDoc(); // Assign to nullable File variable
-          document = Rx<File?>(docFile);
+          // File? docFile =
+          //     await _checkForDoc(); // Assign to nullable File variable
+          // document = Rx<File?>(docFile);
 
-          log('document: ${document.value?.uri.toString()} ${document.value?.path} ${document.value?.path}');
+          // log('document: ${document.value?.uri.toString()} ${document.value?.path} ${document.value?.path}');
         }
         isLoadingDetails.value = false;
         return responseData['code'];
@@ -93,34 +93,34 @@ class AlertController extends GetxController {
     return -1;
   }
 
-  Future<File?> _checkForDoc() async {
-    if (alertDetails['alertInputType'] == AlertInputType.document.value) {
-      if (alertDetails['alertDocuments'] != null &&
-          alertDetails['alertDocuments'].length > 0) {
-        final response = await http
-            .get(Uri.parse(alertDetails['alertDocuments'][0]['documentUrl']));
-        final bytes = response.bodyBytes;
-        log('file bytes: isEmpty: ${bytes.isEmpty}');
-        File? file = await _storeFile(
-            alertDetails['alertDocuments'][0]['documentUrl'], bytes);
-        return file;
-      }
-    }
-    return null;
-  }
-
-  Future<File?> _storeFile(String url, List<int> bytes) async {
-    try {
-      final filename = alertDetails['alertDocuments'][0]['documentName'];
-      final dir = await getApplicationDocumentsDirectory();
-      log("file name: $filename application dir: ${dir.path}");
-      final file = File('${dir.path}/$filename');
-      await file.writeAsBytes(bytes, flush: true);
-      log(' path of created file: ${file.path}');
-      return file;
-    } catch (error) {
-      log('Error storing file: $error');
-      return null; // Return null if file cannot be stored
-    }
-  }
+  // Future<File?> _checkForDoc() async {
+  //   if (alertDetails['alertInputType'] == AlertInputType.document.value) {
+  //     if (alertDetails['alertDocuments'] != null &&
+  //         alertDetails['alertDocuments'].length > 0) {
+  //       final response = await http
+  //           .get(Uri.parse(alertDetails['alertDocuments'][0]['documentUrl']));
+  //       final bytes = response.bodyBytes;
+  //       log('file bytes: isEmpty: ${bytes.isEmpty}');
+  //       File? file = await _storeFile(
+  //           alertDetails['alertDocuments'][0]['documentUrl'], bytes);
+  //       return file;
+  //     }
+  //   }
+  //   return null;
+  // }
+  //
+  // Future<File?> _storeFile(String url, List<int> bytes) async {
+  //   try {
+  //     final filename = alertDetails['alertDocuments'][0]['documentName'];
+  //     final dir = await getApplicationDocumentsDirectory();
+  //     log("file name: $filename application dir: ${dir.path}");
+  //     final file = File('${dir.path}/$filename');
+  //     await file.writeAsBytes(bytes, flush: true);
+  //     log(' path of created file: ${file.path}');
+  //     return file;
+  //   } catch (error) {
+  //     log('Error storing file: $error');
+  //     return null; // Return null if file cannot be stored
+  //   }
+  // }
 }
